@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoTrack - Premium Carbon Tracker</title>
+    
+    <!-- Fonts: Space Grotesk, Inter, JetBrains Mono imported in styles.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/hero.css">
+    <link rel="stylesheet" href="css/calculator.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/tracker.css">
+    <link rel="stylesheet" href="css/gamification.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sticky Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="sidebar-brand">
+                <i class="fa-solid fa-earth-americas"></i>
+                <h2>EcoTrack</h2>
+            </div>
+            
+            <div class="nav-links">
+                <a href="#hero" class="nav-item active" data-target="hero">
+                    <i class="fa-solid fa-satellite-dish"></i> Live Today
+                </a>
+                <a href="#calculator" class="nav-item" data-target="calculator">
+                    <i class="fa-solid fa-calculator"></i> Calculator
+                </a>
+                <a href="#dashboard" class="nav-item" data-target="dashboard">
+                    <i class="fa-solid fa-chart-line"></i> Analytics
+                </a>
+                <a href="#tracker" class="nav-item" data-target="tracker">
+                    <i class="fa-solid fa-person-walking"></i> Activity Log
+                </a>
+                <a href="#gamification" class="nav-item" data-target="gamification">
+                    <i class="fa-solid fa-gamepad"></i> Challenges
+                </a>
+                <a href="#insights" class="nav-item" data-target="insights">
+                    <i class="fa-solid fa-brain"></i> AI Insights
+                </a>
+                <a href="#leaderboard" class="nav-item" data-target="leaderboard">
+                    <i class="fa-solid fa-trophy"></i> Leaderboard
+                </a>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="level-info">
+                    <span class="level-name">Lvl 1: Seedling</span>
+                    <span class="xp-text mono">0 / 100 XP</span>
+                </div>
+                <div class="xp-bar-container">
+                    <div class="xp-bar-fill" id="sidebar-xp-fill"></div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            
+            <!-- Section 1: Hero / Live Today -->
+            <section id="hero" class="section hero-section">
+                <div class="hero-glow" id="hero-glow-element"></div>
+                
+                <div class="hero-content">
+                    <div class="hero-header">
+                        <div class="real-time-clock" id="live-clock">Today, --:--</div>
+                        <h1 class="hero-title">Mission Control for Your Footprint</h1>
+                        <p class="hero-tagline">Every choice leaves a trace. Make yours count.</p>
+                    </div>
+
+                    <div class="gauge-container">
+                        <svg class="gauge-svg" viewBox="0 0 300 300">
+                            <!-- Background ring -->
+                            <circle class="gauge-bg" cx="150" cy="150" r="130"></circle>
+                            <!-- Animated fill ring -->
+                            <circle class="gauge-fill" id="main-co2-gauge" cx="150" cy="150" r="130"></circle>
+                        </svg>
+                        <div class="gauge-center">
+                            <span class="gauge-value" id="main-co2-value">0.0</span>
+                            <span class="gauge-unit">kg CO₂e Today</span>
+                        </div>
+                    </div>
+
+                    <div class="live-stats-grid">
+                        <div class="stat-card">
+                            <span class="stat-icon">🚗</span>
+                            <span class="stat-value" id="stat-transport" data-target="0">0.0</span>
+                            <span class="stat-label">Transport kg</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-icon">⚡</span>
+                            <span class="stat-value" id="stat-energy" data-target="0">0.0</span>
+                            <span class="stat-label">Energy kg</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-icon">🥗</span>
+                            <span class="stat-value" id="stat-diet" data-target="0">0.0</span>
+                            <span class="stat-label">Diet kg</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-icon">🔥</span>
+                            <span class="stat-value" id="stat-streak" data-target="0">0</span>
+                            <span class="stat-label">Day Streak</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 2: Interactive Calculator -->
+            <section id="calculator" class="section">
+                <div class="section-header">
+                    <h1>Carbon Footprint Wizard</h1>
+                    <p>Log your daily activities and see real-time impact.</p>
+                </div>
+                
+                <div class="card wizard-card">
+                    <div class="wizard-progress">
+                        <div class="progress-bar-container">
+                            <div class="progress-bar-fill" id="wizard-progress-fill" style="width: 25%;"></div>
+                        </div>
+                        <div class="progress-text mono">Step <span id="wizard-step-num">1</span>/4</div>
+                    </div>
+
+                    <!-- Step 1: Transport -->
+                    <div class="wizard-step active-step" id="step-1" data-category="transport">
+                        <div class="step-header">
+                            <i class="fa-solid fa-car"></i>
+                            <h2>Transport</h2>
+                        </div>
+                        <div class="input-group">
+                            <div class="input-header">
+                                <label>Car Distance (km)</label>
+                                <span class="live-val mono" id="val-car-km">0 km</span>
+                            </div>
+                            <input type="range" id="slider-car" min="0" max="200" value="0" class="impact-slider">
+                            <div class="impact-meter" id="meter-car"></div>
+                            
+                            <div class="toggle-group mt-2">
+                                <label class="toggle-label">
+                                    <input type="checkbox" id="toggle-electric-car" class="neon-toggle">
+                                    <span class="toggle-text">Electric Vehicle?</span>
+                                </label>
+                                <label class="toggle-label">
+                                    <input type="checkbox" id="toggle-diesel-car" class="neon-toggle">
+                                    <span class="toggle-text">Diesel?</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="input-group">
+                            <div class="input-header">
+                                <label>Public Transit (km)</label>
+                                <span class="live-val mono" id="val-transit-km">0 km</span>
+                            </div>
+                            <input type="range" id="slider-transit" min="0" max="100" value="0" class="impact-slider">
+                        </div>
+                        
+                        <div class="input-group">
+                            <div class="input-header">
+                                <label>Flights (hours this month)</label>
+                                <span class="live-val mono" id="val-flight-hrs">0 hr</span>
+                            </div>
+                            <input type="range" id="slider-flight" min="0" max="40" value="0" class="impact-slider">
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Energy -->
+                    <div class="wizard-step" id="step-2" data-category="energy">
+                        <div class="step-header">
+                            <i class="fa-solid fa-bolt"></i>
+                            <h2>Home Energy</h2>
+                        </div>
+                        <div class="input-group">
+                            <div class="input-header">
+                                <label>Electricity Usage (kWh)</label>
+                                <span class="live-val mono" id="val-elec-kwh">0 kWh</span>
+                            </div>
+                            <input type="range" id="slider-elec" min="0" max="100" value="0" class="impact-slider">
+                        </div>
+                        
+                        <div class="input-group">
+                            <div class="input-header">
+                                <label>Natural Gas (m³)</label>
+                                <span class="live-val mono" id="val-gas-m3">0 m³</span>
+                            </div>
+                            <input type="range" id="slider-gas" min="0" max="50" value="0" class="impact-slider">
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Diet -->
+                    <div class="wizard-step" id="step-3" data-category="diet">
+                        <div class="step-header">
+                            <i class="fa-solid fa-utensils"></i>
+                            <h2>Diet & Food</h2>
+                        </div>
+                        <div class="input-group">
+                            <div class="input-header">
+                                <label>Beef Meals</label>
+                                <span class="live-val mono" id="val-beef-meals">0 meals</span>
+                            </div>
+                            <input type="range" id="slider-beef" min="0" max="14" value="0" class="impact-slider">
+                        </div>
+                        
+                        <div class="input-group">
+                            <div class="input-header">
+                                <label>Chicken Meals</label>
+                                <span class="live-val mono" id="val-chicken-meals">0 meals</span>
+                            </div>
+                            <input type="range" id="slider-chicken" min="0" max="14" value="0" class="impact-slider">
+                        </div>
+                        
+                        <div class="input-group">
+                            <div class="input-header">
+                                <label>Vegan / Plant-based Meals</label>
+                                <span class="live-val mono" id="val-vegan-meals">0 meals</span>
+                            </div>
+                            <input type="range" id="slider-vegan" min="0" max="21" value="0" class="impact-slider">
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Shopping -->
+                    <div class="wizard-step" id="step-4" data-category="shopping">
+                        <div class="step-header">
+                            <i class="fa-solid fa-bag-shopping"></i>
+                            <h2>Shopping & Lifestyle</h2>
+                        </div>
+                        <div class="input-group">
+                            <div class="input-header">
+                                <label>New Clothing Items</label>
+                                <span class="live-val mono" id="val-clothes">0 items</span>
+                            </div>
+                            <input type="range" id="slider-clothes" min="0" max="20" value="0" class="impact-slider">
+                        </div>
+                        
+                        <div class="input-group">
+                            <div class="input-header">
+                                <label>Online Orders</label>
+                                <span class="live-val mono" id="val-orders">0 orders</span>
+                            </div>
+                            <input type="range" id="slider-orders" min="0" max="15" value="0" class="impact-slider">
+                        </div>
+                    </div>
+
+                    <!-- Final Results Screen -->
+                    <div class="wizard-step" id="step-results">
+                        <div class="results-layout">
+                            <div class="results-chart-container">
+                                <canvas id="wizard-result-chart"></canvas>
+                                <div class="results-total-center">
+                                    <span class="mono" id="wizard-final-total">0.0</span>
+                                    <span class="unit">kg CO₂e</span>
+                                </div>
+                            </div>
+                            <div class="results-details">
+                                <h2 id="wizard-badge" class="hero-badge">🟢 Hero</h2>
+                                <p class="equivalence-cycle" id="wizard-equivalence">= 🌳 0 trees needed</p>
+                                <button class="btn-neon mt-4" id="btn-save-wizard">Save to Dashboard →</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer Controls -->
+                    <div class="wizard-footer">
+                        <div class="running-total">
+                            <span>Current Impact: </span>
+                            <span class="mono glow-text" id="wizard-running-total">0.00 kg CO₂e</span>
+                        </div>
+                        <div class="wizard-buttons">
+                            <button class="btn-ghost" id="btn-prev" style="display:none;">← Back</button>
+                            <button class="btn-neon" id="btn-next">Next Step →</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 3: Dashboard & Analytics -->
+            <section id="dashboard" class="section">
+                <div class="section-header">
+                    <h1>Analytics Dashboard</h1>
+                    <p>Deep dive into your environmental impact patterns.</p>
+                </div>
+                
+                <div class="kpi-row">
+                    <div class="kpi-card">
+                        <span class="kpi-label">This Week</span>
+                        <span class="kpi-value mono" id="kpi-week">0.0 kg</span>
+                    </div>
+                    <div class="kpi-card">
+                        <span class="kpi-label">vs Last Week</span>
+                        <span class="kpi-value mono" id="kpi-trend">0%</span>
+                    </div>
+                    <div class="kpi-card">
+                        <span class="kpi-label">Best Day</span>
+                        <span class="kpi-value mono" id="kpi-best-day">--</span>
+                    </div>
+                    <div class="kpi-card">
+                        <span class="kpi-label">Carbon Saved</span>
+                        <span class="kpi-value mono text-accent" id="kpi-saved">0.0 kg</span>
+                    </div>
+                </div>
+
+                <div class="charts-grid">
+                    <div class="card chart-card large-chart">
+                        <h3>7-Day Emissions by Category</h3>
+                        <div class="canvas-container">
+                            <canvas id="chart-7day"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="card chart-card">
+                        <h3>Category Breakdown</h3>
+                        <div class="canvas-container">
+                            <canvas id="chart-category"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="card chart-card large-chart">
+                        <h3>Monthly Trend</h3>
+                        <div class="canvas-container">
+                            <canvas id="chart-monthly"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="card chart-card">
+                        <h3>You vs The World</h3>
+                        <div class="canvas-container">
+                            <canvas id="chart-comparison"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 4: Step & Activity Tracker -->
+            <section id="tracker" class="section">
+                <div class="section-header">
+                    <h1>Activity Tracker</h1>
+                    <p>Every step counts. Log your daily eco-actions to offset your emissions.</p>
+                </div>
+
+                <div class="tracker-grid">
+                    <!-- Pedometer -->
+                    <div class="card pedometer-card">
+                        <div class="pedometer-header">
+                            <h3><i class="fa-solid fa-shoe-prints"></i> Daily Steps</h3>
+                            <span class="goal-text">Goal: 10,000</span>
+                        </div>
+                        
+                        <div class="pedometer-gauge">
+                            <svg viewBox="0 0 200 200">
+                                <circle class="step-bg" cx="100" cy="100" r="80"></circle>
+                                <circle class="step-fill" id="step-ring-fill" cx="100" cy="100" r="80"></circle>
+                            </svg>
+                            <div class="step-center">
+                                <span class="step-count mono" id="live-step-count">0</span>
+                                <span class="step-savings" id="live-step-savings">0.00 kg saved</span>
+                            </div>
+                        </div>
+
+                        <div class="step-controls">
+                            <div class="manual-input">
+                                <button class="btn-step" id="btn-step-minus">-</button>
+                                <input type="number" id="manual-step-input" value="0" min="0">
+                                <button class="btn-step" id="btn-step-plus">+</button>
+                            </div>
+                            <div class="quick-adds">
+                                <button class="btn-quick-add" data-add="500">+500</button>
+                                <button class="btn-quick-add" data-add="1000">+1k</button>
+                                <button class="btn-quick-add" data-add="2000">+2k</button>
+                            </div>
+                            <button class="btn-neon w-100 mt-3" id="btn-save-steps">Log Steps</button>
+                        </div>
+                    </div>
+
+                    <!-- Activity Log -->
+                    <div class="card activity-card">
+                        <div class="activity-header">
+                            <h3><i class="fa-solid fa-list-check"></i> Log Action</h3>
+                            <span class="savings-total mono glow-text" id="today-savings-total">Today: 0.00 kg</span>
+                        </div>
+                        
+                        <div class="activity-grid">
+                            <button class="activity-btn" data-id="walking" data-savings="0.5">
+                                <span class="emoji">🚶</span> Walking
+                                <div class="tooltip">Saves 0.5 kg</div>
+                            </button>
+                            <button class="activity-btn" data-id="cycling" data-savings="0.8">
+                                <span class="emoji">🚴</span> Cycling
+                                <div class="tooltip">Saves 0.8 kg</div>
+                            </button>
+                            <button class="activity-btn" data-id="bus" data-savings="1.2">
+                                <span class="emoji">🚌</span> Bus
+                                <div class="tooltip">Saves 1.2 kg</div>
+                            </button>
+                            <button class="activity-btn" data-id="garden" data-savings="0.3">
+                                <span class="emoji">🌱</span> Gardening
+                                <div class="tooltip">Saves 0.3 kg</div>
+                            </button>
+                            <button class="activity-btn" data-id="laundry" data-savings="1.5">
+                                <span class="emoji">🧺</span> Air Dry
+                                <div class="tooltip">Saves 1.5 kg</div>
+                            </button>
+                            <button class="activity-btn" data-id="recycle" data-savings="0.2">
+                                <span class="emoji">♻️</span> Recycle
+                                <div class="tooltip">Saves 0.2 kg</div>
+                            </button>
+                            <button class="activity-btn" data-id="plantmeal" data-savings="2.0">
+                                <span class="emoji">🥗</span> Plant Meal
+                                <div class="tooltip">Saves 2.0 kg</div>
+                            </button>
+                            <button class="activity-btn" data-id="shower" data-savings="0.4">
+                                <span class="emoji">🚿</span> Short Shower
+                                <div class="tooltip">Saves 0.4 kg</div>
+                            </button>
+                        </div>
+                        
+                        <div class="log-history" id="activity-log-list">
+                            <!-- Injected via JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Weekly Heatmap -->
+                <div class="card heatmap-card mt-4">
+                    <h3>Contribution Heatmap (Last 4 Weeks)</h3>
+                    <div class="heatmap-container" id="heatmap-container">
+                        <!-- Injected via JS -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 5: Habit Challenges & Streaks -->
+            <section id="gamification" class="section">
+                <div class="section-header">
+                    <h1>Challenges &amp; Badges</h1>
+                    <p>Level up your eco-game with weekly challenges and achievements.</p>
+                </div>
+
+                <!-- XP Hero Card -->
+                <div class="xp-hero-card card">
+                    <div class="xp-hero-left">
+                        <div class="level-badge" id="gam-level-badge">1</div>
+                        <div class="xp-hero-details">
+                            <div class="level-title" id="gam-level-title">Lvl 1: Seedling</div>
+                            <div class="xp-bar-large">
+                                <div class="xp-fill-large" id="gam-xp-fill"></div>
+                            </div>
+                            <div class="xp-label mono" id="gam-xp-label">0 / 100 XP</div>
+                        </div>
+                    </div>
+                    <div class="xp-hero-right">
+                        <div class="stat-pill"><span>🔥</span><span id="gam-streak">0</span> Day Streak</div>
+                        <div class="stat-pill"><span>🏆</span><span id="gam-badges-count">0</span> Badges</div>
+                        <div class="stat-pill"><span>✅</span><span id="gam-challenges-count">0</span> Challenges Done</div>
+                    </div>
+                </div>
+
+                <!-- Active Challenges -->
+                <h2 class="subsection-title">Weekly Challenges</h2>
+                <div class="challenges-grid" id="challenges-grid">
+                    <!-- Injected via JS -->
+                </div>
+
+                <!-- Badge Collection -->
+                <h2 class="subsection-title mt-section">Badge Collection</h2>
+                <div class="badges-grid" id="badges-grid">
+                    <!-- Injected via JS -->
+                </div>
+            </section>
+
+
+            <!-- Section 6: AI Insights -->
+            <section id="insights" class="section">
+                <div class="section-header">
+                    <h1>AI Insights</h1>
+                    <p>Personalized analysis and recommendations powered by your data.</p>
+                </div>
+
+                <div class="insights-layout">
+                    <!-- Left: Main Analysis -->
+                    <div class="insights-main">
+                        <div class="card insight-story-card">
+                            <span class="insight-icon">🧠</span>
+                            <h3>Your Carbon Story</h3>
+                            <p id="highest-emission-source">Loading your insights...</p>
+                        </div>
+
+                        <div class="card insight-compare-card">
+                            <h3>You vs The World</h3>
+                            <div class="compare-bars">
+                                <div class="compare-row">
+                                    <span class="compare-label">You</span>
+                                    <div class="compare-bar-track">
+                                        <div class="compare-bar you-bar" id="insight-bar-you">--</div>
+                                    </div>
+                                </div>
+                                <div class="compare-row">
+                                    <span class="compare-label">World Avg</span>
+                                    <div class="compare-bar-track">
+                                        <div class="compare-bar avg-bar" id="insight-bar-avg">13.5 kg</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Tips + Fact + Action -->
+                    <div class="insights-side">
+                        <div class="card insight-tips-card">
+                            <h3>⚡ Quick Wins</h3>
+                            <p class="card-subtitle">Actions you can take this week</p>
+                            <ul class="quick-wins-list" id="quick-wins-list"></ul>
+                        </div>
+
+                        <div class="card insight-fact-card">
+                            <span class="fact-icon">💡</span>
+                            <h4>Eco Fact of the Day</h4>
+                            <p id="fun-fact">Loading...</p>
+                        </div>
+
+                        <div class="card insight-action-card">
+                            <h4>🌿 Try This Week</h4>
+                            <p id="weekly-action">Loading...</p>
+                            <button class="btn-neon btn-small" id="btn-refresh-insights">Refresh Tips ↺</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- Section 7: Community Leaderboard -->
+            <section id="leaderboard" class="section">
+                <div class="section-header">
+                    <h1>Community Leaderboard</h1>
+                    <p>See how you stack up against eco-warriors worldwide.</p>
+                </div>
+
+                <div class="lb-filters">
+                    <button class="lb-filter-btn active" data-period="weekly">This Week</button>
+                    <button class="lb-filter-btn" data-period="monthly">This Month</button>
+                    <button class="lb-filter-btn" data-period="alltime">All Time</button>
+                </div>
+
+                <div class="lb-layout">
+                    <div class="lb-podium" id="lb-podium"></div>
+
+                    <div class="card lb-list-card">
+                        <div class="lb-list" id="lb-list"></div>
+                    </div>
+
+                    <div class="card lb-your-rank-card" id="lb-your-rank"></div>
+                </div>
+            </section>
+
+
+        </main>
+    </div>
+
+    <!-- Firebase SDK (Modular) -->
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js"></script>
+
+    <!-- App Scripts (Modular) -->
+    <script type="module" src="js/storage.js"></script>
+    <script type="module" src="js/firebase-config.js"></script>
+    <script type="module" src="js/hero.js"></script>
+    <script type="module" src="js/calculator.js"></script>
+    <script type="module" src="js/dashboard.js"></script>
+    <script type="module" src="js/tracker.js"></script>
+    <script type="module" src="js/gamification.js"></script>
+    <script type="module" src="js/insights.js"></script>
+    <script type="module" src="js/leaderboard.js"></script>
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>

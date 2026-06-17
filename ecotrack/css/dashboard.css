@@ -1,0 +1,88 @@
+/* css/dashboard.css */
+
+.kpi-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.kpi-card {
+    background: rgba(26, 46, 31, 0.4);
+    border: 1px solid rgba(57, 255, 106, 0.2);
+    border-radius: var(--radius-sm);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    position: relative;
+    overflow: hidden;
+}
+
+.kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background-color: var(--accent-neon);
+}
+
+.kpi-label {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.kpi-value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.text-accent {
+    color: var(--accent-lime);
+}
+
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+}
+
+.chart-card {
+    display: flex;
+    flex-direction: column;
+}
+
+.chart-card h3 {
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+    color: var(--text-primary);
+}
+
+.canvas-container {
+    position: relative;
+    flex: 1;
+    min-height: 300px;
+    width: 100%;
+}
+
+.large-chart .canvas-container {
+    min-height: 400px;
+}
+
+/* Ensure responsiveness */
+@media (max-width: 1200px) {
+    .charts-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 900px) {
+    .kpi-row {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

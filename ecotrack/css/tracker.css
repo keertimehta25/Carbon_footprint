@@ -1,0 +1,354 @@
+/* css/tracker.css */
+
+.tracker-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 30px;
+}
+
+/* Pedometer */
+.pedometer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.pedometer-header i {
+    color: var(--accent-neon);
+    margin-right: 8px;
+}
+
+.goal-text {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.pedometer-gauge {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 30px auto;
+}
+
+.pedometer-gauge svg {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+}
+
+.step-bg {
+    fill: none;
+    stroke: var(--bg-elevated);
+    stroke-width: 12;
+}
+
+.step-fill {
+    fill: none;
+    stroke: var(--accent-neon);
+    stroke-width: 12;
+    stroke-linecap: round;
+    stroke-dasharray: 502; /* 2 * PI * 80 */
+    stroke-dashoffset: 502;
+    transition: stroke-dashoffset 1s cubic-bezier(0.16, 1, 0.3, 1), stroke 0.5s ease;
+    filter: drop-shadow(0 0 5px rgba(57, 255, 106, 0.4));
+}
+
+.step-center {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.step-count {
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--text-primary);
+}
+
+.step-savings {
+    font-size: 0.9rem;
+    color: var(--accent-lime);
+    margin-top: 8px;
+}
+
+.step-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.manual-input {
+    display: flex;
+    align-items: center;
+    background: var(--bg-elevated);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+    border: 1px solid rgba(107, 143, 113, 0.2);
+}
+
+.manual-input input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.2rem;
+    padding: 10px;
+    outline: none;
+}
+
+.manual-input input::-webkit-outer-spin-button,
+.manual-input input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.btn-step {
+    background: transparent;
+    border: none;
+    color: var(--accent-neon);
+    font-size: 1.5rem;
+    width: 40px;
+    height: 100%;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-step:hover {
+    background: rgba(57, 255, 106, 0.1);
+}
+
+.quick-adds {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-quick-add {
+    flex: 1;
+    background: transparent;
+    border: 1px solid rgba(107, 143, 113, 0.4);
+    color: var(--text-primary);
+    padding: 8px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: var(--transition-fast);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9rem;
+}
+
+.btn-quick-add:hover {
+    border-color: var(--accent-neon);
+    color: var(--accent-neon);
+}
+
+.w-100 {
+    width: 100%;
+}
+
+.mt-3 {
+    margin-top: 15px;
+}
+.mt-4 {
+    margin-top: 30px;
+}
+
+/* Activity Log */
+.activity-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(107, 143, 113, 0.1);
+    padding-bottom: 16px;
+}
+
+.activity-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.activity-btn {
+    background: var(--bg-elevated);
+    border: 1px solid rgba(107, 143, 113, 0.2);
+    border-radius: var(--radius-md);
+    padding: 15px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    position: relative;
+}
+
+.activity-btn:hover {
+    border-color: var(--accent-neon);
+    background: rgba(57, 255, 106, 0.05);
+    transform: translateY(-2px);
+}
+
+.activity-btn .emoji {
+    font-size: 1.8rem;
+}
+
+.activity-btn .tooltip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    background: var(--accent-neon);
+    color: var(--bg-deep);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.activity-btn:hover .tooltip {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-5px);
+}
+
+.log-history {
+    max-height: 250px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-right: 10px;
+}
+
+/* Custom scrollbar for log history */
+.log-history::-webkit-scrollbar {
+    width: 6px;
+}
+.log-history::-webkit-scrollbar-track {
+    background: var(--bg-elevated);
+    border-radius: 3px;
+}
+.log-history::-webkit-scrollbar-thumb {
+    background: var(--text-muted);
+    border-radius: 3px;
+}
+
+.log-entry {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(26, 46, 31, 0.3);
+    padding: 12px 16px;
+    border-radius: var(--radius-sm);
+    border-left: 3px solid var(--accent-lime);
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(-20px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+.log-entry-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.log-entry-time {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.log-entry-savings {
+    color: var(--accent-neon);
+    font-weight: 600;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+/* Heatmap */
+.heatmap-card {
+    overflow-x: auto;
+}
+
+.heatmap-container {
+    display: flex;
+    gap: 4px;
+    padding: 10px 0;
+}
+
+.heatmap-col {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.heatmap-cell {
+    width: 14px;
+    height: 14px;
+    border-radius: 2px;
+    background-color: var(--bg-elevated);
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+
+.heatmap-cell:hover {
+    transform: scale(1.2);
+    z-index: 2;
+}
+
+.heatmap-cell[data-level="1"] { background-color: rgba(57, 255, 106, 0.2); }
+.heatmap-cell[data-level="2"] { background-color: rgba(57, 255, 106, 0.5); }
+.heatmap-cell[data-level="3"] { background-color: rgba(57, 255, 106, 0.8); }
+.heatmap-cell[data-level="4"] { background-color: var(--accent-neon); box-shadow: 0 0 5px var(--accent-neon); }
+
+.heatmap-cell .tooltip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-5px);
+    background: var(--bg-card);
+    color: var(--text-primary);
+    border: 1px solid rgba(107, 143, 113, 0.4);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+    white-space: nowrap;
+    z-index: 10;
+}
+
+.heatmap-cell:hover .tooltip {
+    opacity: 1;
+}
+
+/* Responsive */
+@media (max-width: 1000px) {
+    .tracker-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .activity-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

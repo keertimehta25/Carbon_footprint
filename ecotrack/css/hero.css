@@ -1,0 +1,162 @@
+/* css/hero.css */
+
+.hero-section {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+    padding-top: 100px;
+    padding-bottom: 60px;
+}
+
+/* Dynamic background glow based on emissions */
+.hero-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(57, 255, 106, 0.1) 0%, transparent 70%);
+    z-index: 0;
+    pointer-events: none;
+    animation: pulse-earth 4s infinite ease-in-out;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 1000px;
+}
+
+.hero-header {
+    margin-bottom: 40px;
+}
+
+.real-time-clock {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent-neon);
+    font-size: 1.1rem;
+    margin-bottom: 16px;
+    letter-spacing: 1px;
+}
+
+.hero-title {
+    font-size: 4rem;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    background: linear-gradient(180deg, #FFFFFF 0%, #A8FF3E 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero-tagline {
+    font-size: 1.2rem;
+    color: var(--text-muted);
+}
+
+/* Giant SVG Gauge */
+.gauge-container {
+    position: relative;
+    width: 300px;
+    height: 300px;
+    margin: 0 auto 50px auto;
+}
+
+.gauge-svg {
+    transform: rotate(-90deg);
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 0 10px rgba(57, 255, 106, 0.3));
+}
+
+.gauge-bg {
+    fill: none;
+    stroke: var(--bg-elevated);
+    stroke-width: 12;
+}
+
+.gauge-fill {
+    fill: none;
+    stroke: var(--accent-neon);
+    stroke-width: 12;
+    stroke-linecap: round;
+    stroke-dasharray: 816; /* 2 * PI * r (130) */
+    stroke-dashoffset: 816; /* Starts empty */
+    transition: stroke-dashoffset 1.5s cubic-bezier(0.16, 1, 0.3, 1), stroke 0.5s ease;
+}
+
+.gauge-center {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.gauge-value {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 4.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1;
+}
+
+.gauge-unit {
+    font-size: 1rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+/* Live Stat Cards */
+.live-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    width: 100%;
+}
+
+.stat-card {
+    background: rgba(17, 26, 20, 0.6);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(107, 143, 113, 0.2);
+    border-radius: var(--radius-md);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: var(--transition-smooth);
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    background: rgba(26, 46, 31, 0.8);
+    border-color: rgba(57, 255, 106, 0.4);
+    box-shadow: var(--shadow-neon);
+}
+
+.stat-icon {
+    font-size: 2rem;
+    margin-bottom: 12px;
+}
+
+.stat-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-top: 4px;
+}
