@@ -1,21 +1,42 @@
-# EcoTrack
+# EcoTrack 🌿 — Personal Carbon Footprint Tracker
 
-EcoTrack is a smart carbon footprint tracker that helps individuals understand, track, and reduce their carbon footprint through simple actions and personalized insights.
+## Problem Statement
+Climate change is accelerating, but individuals lack simple, engaging tools to understand and reduce their personal carbon footprint. EcoTrack bridges this gap by making carbon tracking as intuitive and motivating as a fitness app.
 
-## Vertical
-Personal Sustainability / Carbon Footprint Tracking
+## Solution
+EcoTrack is a browser-based progressive web app that lets users:
+- **Calculate** daily carbon emissions across transport, energy, diet & shopping
+- **Track** eco-friendly activities and step counts to offset emissions
+- **Visualize** trends with interactive charts and a contribution heatmap
+- **Gamify** sustainability through XP, badges, streak tracking, and challenges
+- **Compete** on a community leaderboard to inspire social accountability
 
-## Approach
-EcoTrack uses rule-based emission calculations based on standard IPCC emission factors combined with a personalized insight engine to provide actionable recommendations. It tracks user activities across transportation, energy, diet, and shopping to calculate a daily CO2 equivalent.
+## Tech Stack
+- Vanilla JavaScript (ES Modules), HTML5, CSS3
+- Chart.js for data visualization
+- LocalStorage for offline-first data persistence
+- Docker + Nginx for deployment
+- Firebase Firestore (optional leaderboard backend)
 
-## How it works
-1. **Daily Logging**: Users input their daily activities in the Calculator tab (e.g., miles driven, meals eaten, energy used).
-2. **Real-time Calculation**: The app immediately calculates the CO2 equivalent for each input using standard emission factors.
-3. **Dashboard Visualization**: User data is aggregated and visualized on the dashboard, showing category breakdowns and progress over time.
-4. **Insights Engine**: The app analyzes the data to identify the highest emission sources and suggests personalized "quick wins" and actionable tips.
-5. **Action Tracker**: Users can commit to and track eco-friendly actions (e.g., taking public transit, eating vegetarian), seeing their CO2 savings in real-time and building streaks.
+## Running Locally
+```bash
+# Via Docker
+docker build -t ecotrack .
+docker run -p 8080:80 ecotrack
 
-## Assumptions
-- **Emission Factors Source**: Standard reference values from environmental agencies (like IPCC) are used for calculations.
-- **Average Values**: Where specific details aren't provided by the user, average values for their region or globally are assumed to calculate a baseline.
-- **No Authentication Required**: For simplicity and privacy, all user data is stored locally in the browser using `localStorage`. No data is sent to an external server.
+# Or just open index.html in any modern browser
+```
+
+## Running Tests
+```bash
+node tests/ecotrack.test.js
+```
+
+## Deployment
+Live at: https://ecotrack-silk.vercel.app/
+
+## Carbon Calculation Methodology
+Emission factors sourced from:
+- IPCC 2021 Transport figures
+- UK BEIS Greenhouse Gas Reporting factors
+- Oxford University food emissions research (Poore & Nemecek 2018)

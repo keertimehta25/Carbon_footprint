@@ -1,75 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self';
+                   script-src 'self' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://www.gstatic.com;
+                   style-src 'self' https://cdnjs.cloudflare.com https://fonts.googleapis.com 'unsafe-inline';
+                   font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com;
+                   img-src 'self' data:;
+                   connect-src 'self' https://firestore.googleapis.com;
+                   frame-ancestors 'none';">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="EcoTrack - Track your carbon footprint, log daily eco-actions, and compete with the community to reduce emissions.">
+    <meta name="theme-color" content="#0A0F0D">
     <title>EcoTrack - Premium Carbon Tracker</title>
-    
-    <!-- Fonts: Space Grotesk, Inter, JetBrains Mono imported in styles.css -->
+
+    <!-- Skip navigation for screen readers -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <!-- Styles -->
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/hero.css">
     <link rel="stylesheet" href="css/calculator.css">
     <link rel="stylesheet" href="css/dashboard.css">
     <link rel="stylesheet" href="css/tracker.css">
     <link rel="stylesheet" href="css/gamification.css">
+    <link rel="stylesheet" href="css/accessibility.css">
 </head>
+
 <body>
     <div class="app-container">
+
         <!-- Sticky Sidebar Navigation -->
-        <nav class="sidebar">
-            <div class="sidebar-brand">
-                <i class="fa-solid fa-earth-americas"></i>
+        <nav class="sidebar" role="navigation" aria-label="Main Navigation">
+            <div class="sidebar-brand" role="banner">
+                <i class="fa-solid fa-earth-americas" aria-hidden="true"></i>
                 <h2>EcoTrack</h2>
             </div>
-            
-            <div class="nav-links">
-                <a href="#hero" class="nav-item active" data-target="hero">
-                    <i class="fa-solid fa-satellite-dish"></i> Live Today
+
+            <div class="nav-links" role="menubar">
+                <a href="#hero" class="nav-item active" data-target="hero" role="menuitem" aria-current="page">
+                    <i class="fa-solid fa-satellite-dish" aria-hidden="true"></i>
+                    <span>Live Today</span>
                 </a>
-                <a href="#calculator" class="nav-item" data-target="calculator">
-                    <i class="fa-solid fa-calculator"></i> Calculator
+                <a href="#calculator" class="nav-item" data-target="calculator" role="menuitem">
+                    <i class="fa-solid fa-calculator" aria-hidden="true"></i>
+                    <span>Calculator</span>
                 </a>
-                <a href="#dashboard" class="nav-item" data-target="dashboard">
-                    <i class="fa-solid fa-chart-line"></i> Analytics
+                <a href="#dashboard" class="nav-item" data-target="dashboard" role="menuitem">
+                    <i class="fa-solid fa-chart-line" aria-hidden="true"></i>
+                    <span>Analytics</span>
                 </a>
-                <a href="#tracker" class="nav-item" data-target="tracker">
-                    <i class="fa-solid fa-person-walking"></i> Activity Log
+                <a href="#tracker" class="nav-item" data-target="tracker" role="menuitem">
+                    <i class="fa-solid fa-person-walking" aria-hidden="true"></i>
+                    <span>Activity Log</span>
                 </a>
-                <a href="#gamification" class="nav-item" data-target="gamification">
-                    <i class="fa-solid fa-gamepad"></i> Challenges
+                <a href="#gamification" class="nav-item" data-target="gamification" role="menuitem">
+                    <i class="fa-solid fa-gamepad" aria-hidden="true"></i>
+                    <span>Challenges</span>
                 </a>
-                <a href="#insights" class="nav-item" data-target="insights">
-                    <i class="fa-solid fa-brain"></i> AI Insights
+                <a href="#insights" class="nav-item" data-target="insights" role="menuitem">
+                    <i class="fa-solid fa-brain" aria-hidden="true"></i>
+                    <span>AI Insights</span>
                 </a>
-                <a href="#leaderboard" class="nav-item" data-target="leaderboard">
-                    <i class="fa-solid fa-trophy"></i> Leaderboard
+                <a href="#leaderboard" class="nav-item" data-target="leaderboard" role="menuitem">
+                    <i class="fa-solid fa-trophy" aria-hidden="true"></i>
+                    <span>Leaderboard</span>
                 </a>
             </div>
 
-            <div class="sidebar-footer">
+            <div class="sidebar-footer" aria-label="XP Progress">
                 <div class="level-info">
-                    <span class="level-name">Lvl 1: Seedling</span>
-                    <span class="xp-text mono">0 / 100 XP</span>
+                    <span class="level-name" aria-live="polite">Lvl 1: Seedling</span>
+                    <span class="xp-text mono" aria-label="XP progress">0 / 100 XP</span>
                 </div>
-                <div class="xp-bar-container">
+                <div class="xp-bar-container" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
+                    aria-label="XP Progress Bar">
                     <div class="xp-bar-fill" id="sidebar-xp-fill"></div>
                 </div>
             </div>
         </nav>
 
         <!-- Main Content Area -->
-        <main class="main-content">
-            
+        <main class="main-content" id="main-content" role="main">
+
             <!-- Section 1: Hero / Live Today -->
-            <section id="hero" class="section hero-section">
+            <section id="hero" class="section hero-section" aria-label="Live Today Dashboard">
                 <div class="hero-glow" id="hero-glow-element"></div>
-                
+
                 <div class="hero-content">
                     <div class="hero-header">
                         <div class="real-time-clock" id="live-clock">Today, --:--</div>
@@ -77,15 +100,15 @@
                         <p class="hero-tagline">Every choice leaves a trace. Make yours count.</p>
                     </div>
 
-                    <div class="gauge-container">
-                        <svg class="gauge-svg" viewBox="0 0 300 300">
-                            <!-- Background ring -->
+                    <div class="gauge-container" role="img" aria-labelledby="gauge-title">
+                        <svg class="gauge-svg" viewBox="0 0 300 300" aria-hidden="true">
+                            <title id="gauge-title">Daily CO2 Emissions Gauge</title>
                             <circle class="gauge-bg" cx="150" cy="150" r="130"></circle>
-                            <!-- Animated fill ring -->
                             <circle class="gauge-fill" id="main-co2-gauge" cx="150" cy="150" r="130"></circle>
                         </svg>
                         <div class="gauge-center">
-                            <span class="gauge-value" id="main-co2-value">0.0</span>
+                            <span class="gauge-value" id="main-co2-value" aria-live="polite"
+                                aria-label="CO2 today">0.0</span>
                             <span class="gauge-unit">kg CO₂e Today</span>
                         </div>
                     </div>
@@ -116,12 +139,12 @@
             </section>
 
             <!-- Section 2: Interactive Calculator -->
-            <section id="calculator" class="section">
+            <section id="calculator" class="section" aria-label="Carbon Footprint Calculator">
                 <div class="section-header">
                     <h1>Carbon Footprint Wizard</h1>
                     <p>Log your daily activities and see real-time impact.</p>
                 </div>
-                
+
                 <div class="card wizard-card">
                     <div class="wizard-progress">
                         <div class="progress-bar-container">
@@ -136,40 +159,49 @@
                             <i class="fa-solid fa-car"></i>
                             <h2>Transport</h2>
                         </div>
+
                         <div class="input-group">
                             <div class="input-header">
-                                <label>Car Distance (km)</label>
-                                <span class="live-val mono" id="val-car-km">0 km</span>
+                                <label for="slider-car" id="label-car">Car Distance (km)</label>
+                                <span class="live-val mono" id="val-car-km" aria-live="polite">0 km</span>
                             </div>
-                            <input type="range" id="slider-car" min="0" max="200" value="0" class="impact-slider">
-                            <div class="impact-meter" id="meter-car"></div>
-                            
+                            <input type="range" id="slider-car" min="0" max="200" value="0" class="impact-slider"
+                                aria-labelledby="label-car" aria-valuemin="0" aria-valuemax="200" aria-valuenow="0"
+                                aria-valuetext="0 kilometers">
+                            <div class="impact-meter" id="meter-car" aria-hidden="true"></div>
+
                             <div class="toggle-group mt-2">
-                                <label class="toggle-label">
-                                    <input type="checkbox" id="toggle-electric-car" class="neon-toggle">
+                                <label class="toggle-label" for="toggle-electric-car">
+                                    <input type="checkbox" id="toggle-electric-car" class="neon-toggle"
+                                        aria-label="Use Electric Vehicle">
                                     <span class="toggle-text">Electric Vehicle?</span>
                                 </label>
-                                <label class="toggle-label">
-                                    <input type="checkbox" id="toggle-diesel-car" class="neon-toggle">
+                                <label class="toggle-label" for="toggle-diesel-car">
+                                    <input type="checkbox" id="toggle-diesel-car" class="neon-toggle"
+                                        aria-label="Use Diesel Vehicle">
                                     <span class="toggle-text">Diesel?</span>
                                 </label>
                             </div>
                         </div>
-                        
+
                         <div class="input-group">
                             <div class="input-header">
-                                <label>Public Transit (km)</label>
-                                <span class="live-val mono" id="val-transit-km">0 km</span>
+                                <label for="slider-transit" id="label-transit">Public Transit (km)</label>
+                                <span class="live-val mono" id="val-transit-km" aria-live="polite">0 km</span>
                             </div>
-                            <input type="range" id="slider-transit" min="0" max="100" value="0" class="impact-slider">
+                            <input type="range" id="slider-transit" min="0" max="100" value="0" class="impact-slider"
+                                aria-labelledby="label-transit" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"
+                                aria-valuetext="0 kilometers">
                         </div>
-                        
+
                         <div class="input-group">
                             <div class="input-header">
-                                <label>Flights (hours this month)</label>
-                                <span class="live-val mono" id="val-flight-hrs">0 hr</span>
+                                <label for="slider-flight" id="label-flight">Flights (hours this month)</label>
+                                <span class="live-val mono" id="val-flight-hrs" aria-live="polite">0 hr</span>
                             </div>
-                            <input type="range" id="slider-flight" min="0" max="40" value="0" class="impact-slider">
+                            <input type="range" id="slider-flight" min="0" max="40" value="0" class="impact-slider"
+                                aria-labelledby="label-flight" aria-valuemin="0" aria-valuemax="40" aria-valuenow="0"
+                                aria-valuetext="0 hours">
                         </div>
                     </div>
 
@@ -179,20 +211,25 @@
                             <i class="fa-solid fa-bolt"></i>
                             <h2>Home Energy</h2>
                         </div>
+
                         <div class="input-group">
                             <div class="input-header">
-                                <label>Electricity Usage (kWh)</label>
-                                <span class="live-val mono" id="val-elec-kwh">0 kWh</span>
+                                <label for="slider-elec" id="label-elec">Electricity Usage (kWh)</label>
+                                <span class="live-val mono" id="val-elec-kwh" aria-live="polite">0 kWh</span>
                             </div>
-                            <input type="range" id="slider-elec" min="0" max="100" value="0" class="impact-slider">
+                            <input type="range" id="slider-elec" min="0" max="100" value="0" class="impact-slider"
+                                aria-labelledby="label-elec" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"
+                                aria-valuetext="0 kilowatt hours">
                         </div>
-                        
+
                         <div class="input-group">
                             <div class="input-header">
-                                <label>Natural Gas (m³)</label>
-                                <span class="live-val mono" id="val-gas-m3">0 m³</span>
+                                <label for="slider-gas" id="label-gas">Natural Gas (m³)</label>
+                                <span class="live-val mono" id="val-gas-m3" aria-live="polite">0 m³</span>
                             </div>
-                            <input type="range" id="slider-gas" min="0" max="50" value="0" class="impact-slider">
+                            <input type="range" id="slider-gas" min="0" max="50" value="0" class="impact-slider"
+                                aria-labelledby="label-gas" aria-valuemin="0" aria-valuemax="50" aria-valuenow="0"
+                                aria-valuetext="0 cubic meters">
                         </div>
                     </div>
 
@@ -200,30 +237,37 @@
                     <div class="wizard-step" id="step-3" data-category="diet">
                         <div class="step-header">
                             <i class="fa-solid fa-utensils"></i>
-                            <h2>Diet & Food</h2>
+                            <h2>Diet &amp; Food</h2>
                         </div>
+
                         <div class="input-group">
                             <div class="input-header">
-                                <label>Beef Meals</label>
-                                <span class="live-val mono" id="val-beef-meals">0 meals</span>
+                                <label for="slider-beef" id="label-beef">Beef Meals</label>
+                                <span class="live-val mono" id="val-beef-meals" aria-live="polite">0 meals</span>
                             </div>
-                            <input type="range" id="slider-beef" min="0" max="14" value="0" class="impact-slider">
+                            <input type="range" id="slider-beef" min="0" max="14" value="0" class="impact-slider"
+                                aria-labelledby="label-beef" aria-valuemin="0" aria-valuemax="14" aria-valuenow="0"
+                                aria-valuetext="0 meals">
                         </div>
-                        
+
                         <div class="input-group">
                             <div class="input-header">
-                                <label>Chicken Meals</label>
-                                <span class="live-val mono" id="val-chicken-meals">0 meals</span>
+                                <label for="slider-chicken" id="label-chicken">Chicken Meals</label>
+                                <span class="live-val mono" id="val-chicken-meals" aria-live="polite">0 meals</span>
                             </div>
-                            <input type="range" id="slider-chicken" min="0" max="14" value="0" class="impact-slider">
+                            <input type="range" id="slider-chicken" min="0" max="14" value="0" class="impact-slider"
+                                aria-labelledby="label-chicken" aria-valuemin="0" aria-valuemax="14" aria-valuenow="0"
+                                aria-valuetext="0 meals">
                         </div>
-                        
+
                         <div class="input-group">
                             <div class="input-header">
-                                <label>Vegan / Plant-based Meals</label>
-                                <span class="live-val mono" id="val-vegan-meals">0 meals</span>
+                                <label for="slider-vegan" id="label-vegan">Vegan / Plant-based Meals</label>
+                                <span class="live-val mono" id="val-vegan-meals" aria-live="polite">0 meals</span>
                             </div>
-                            <input type="range" id="slider-vegan" min="0" max="21" value="0" class="impact-slider">
+                            <input type="range" id="slider-vegan" min="0" max="21" value="0" class="impact-slider"
+                                aria-labelledby="label-vegan" aria-valuemin="0" aria-valuemax="21" aria-valuenow="0"
+                                aria-valuetext="0 meals">
                         </div>
                     </div>
 
@@ -231,22 +275,27 @@
                     <div class="wizard-step" id="step-4" data-category="shopping">
                         <div class="step-header">
                             <i class="fa-solid fa-bag-shopping"></i>
-                            <h2>Shopping & Lifestyle</h2>
+                            <h2>Shopping &amp; Lifestyle</h2>
                         </div>
+
                         <div class="input-group">
                             <div class="input-header">
-                                <label>New Clothing Items</label>
-                                <span class="live-val mono" id="val-clothes">0 items</span>
+                                <label for="slider-clothes" id="label-clothes">New Clothing Items</label>
+                                <span class="live-val mono" id="val-clothes" aria-live="polite">0 items</span>
                             </div>
-                            <input type="range" id="slider-clothes" min="0" max="20" value="0" class="impact-slider">
+                            <input type="range" id="slider-clothes" min="0" max="20" value="0" class="impact-slider"
+                                aria-labelledby="label-clothes" aria-valuemin="0" aria-valuemax="20" aria-valuenow="0"
+                                aria-valuetext="0 items">
                         </div>
-                        
+
                         <div class="input-group">
                             <div class="input-header">
-                                <label>Online Orders</label>
-                                <span class="live-val mono" id="val-orders">0 orders</span>
+                                <label for="slider-orders" id="label-orders">Online Orders</label>
+                                <span class="live-val mono" id="val-orders" aria-live="polite">0 orders</span>
                             </div>
-                            <input type="range" id="slider-orders" min="0" max="15" value="0" class="impact-slider">
+                            <input type="range" id="slider-orders" min="0" max="15" value="0" class="impact-slider"
+                                aria-labelledby="label-orders" aria-valuemin="0" aria-valuemax="15" aria-valuenow="0"
+                                aria-valuetext="0 orders">
                         </div>
                     </div>
 
@@ -283,12 +332,12 @@
             </section>
 
             <!-- Section 3: Dashboard & Analytics -->
-            <section id="dashboard" class="section">
+            <section id="dashboard" class="section" aria-label="Analytics Dashboard">
                 <div class="section-header">
                     <h1>Analytics Dashboard</h1>
                     <p>Deep dive into your environmental impact patterns.</p>
                 </div>
-                
+
                 <div class="kpi-row">
                     <div class="kpi-card">
                         <span class="kpi-label">This Week</span>
@@ -315,7 +364,7 @@
                             <canvas id="chart-7day"></canvas>
                         </div>
                     </div>
-                    
+
                     <div class="card chart-card">
                         <h3>Category Breakdown</h3>
                         <div class="canvas-container">
@@ -340,7 +389,7 @@
             </section>
 
             <!-- Section 4: Step & Activity Tracker -->
-            <section id="tracker" class="section">
+            <section id="tracker" class="section" aria-label="Activity Tracker">
                 <div class="section-header">
                     <h1>Activity Tracker</h1>
                     <p>Every step counts. Log your daily eco-actions to offset your emissions.</p>
@@ -353,30 +402,36 @@
                             <h3><i class="fa-solid fa-shoe-prints"></i> Daily Steps</h3>
                             <span class="goal-text">Goal: 10,000</span>
                         </div>
-                        
-                        <div class="pedometer-gauge">
-                            <svg viewBox="0 0 200 200">
+
+                        <div class="pedometer-gauge" role="img" aria-labelledby="pedometer-label">
+                            <svg viewBox="0 0 200 200" aria-hidden="true">
+                                <title>Step Progress Ring</title>
                                 <circle class="step-bg" cx="100" cy="100" r="80"></circle>
                                 <circle class="step-fill" id="step-ring-fill" cx="100" cy="100" r="80"></circle>
                             </svg>
-                            <div class="step-center">
-                                <span class="step-count mono" id="live-step-count">0</span>
-                                <span class="step-savings" id="live-step-savings">0.00 kg saved</span>
+                            <div class="step-center" id="pedometer-label">
+                                <span class="step-count mono" id="live-step-count" aria-live="polite">0</span>
+                                <span class="step-savings" id="live-step-savings" aria-live="polite">0.00 kg
+                                    saved</span>
                             </div>
                         </div>
 
                         <div class="step-controls">
-                            <div class="manual-input">
-                                <button class="btn-step" id="btn-step-minus">-</button>
-                                <input type="number" id="manual-step-input" value="0" min="0">
-                                <button class="btn-step" id="btn-step-plus">+</button>
+                            <div class="manual-input" role="group" aria-label="Manual step input">
+                                <button class="btn-step" id="btn-step-minus"
+                                    aria-label="Decrease steps by 100">-</button>
+                                <input type="number" id="manual-step-input" value="0" min="0"
+                                    aria-label="Number of steps to add">
+                                <button class="btn-step" id="btn-step-plus"
+                                    aria-label="Increase steps by 100">+</button>
                             </div>
-                            <div class="quick-adds">
-                                <button class="btn-quick-add" data-add="500">+500</button>
-                                <button class="btn-quick-add" data-add="1000">+1k</button>
-                                <button class="btn-quick-add" data-add="2000">+2k</button>
+                            <div class="quick-adds" role="group" aria-label="Quick step additions">
+                                <button class="btn-quick-add" data-add="500" aria-label="Add 500 steps">+500</button>
+                                <button class="btn-quick-add" data-add="1000" aria-label="Add 1000 steps">+1k</button>
+                                <button class="btn-quick-add" data-add="2000" aria-label="Add 2000 steps">+2k</button>
                             </div>
-                            <button class="btn-neon w-100 mt-3" id="btn-save-steps">Log Steps</button>
+                            <button class="btn-neon w-100 mt-3" id="btn-save-steps"
+                                aria-label="Save steps to activity log">Log Steps</button>
                         </div>
                     </div>
 
@@ -386,42 +441,67 @@
                             <h3><i class="fa-solid fa-list-check"></i> Log Action</h3>
                             <span class="savings-total mono glow-text" id="today-savings-total">Today: 0.00 kg</span>
                         </div>
-                        
+
                         <div class="activity-grid">
-                            <button class="activity-btn" data-id="walking" data-savings="0.5">
-                                <span class="emoji">🚶</span> Walking
-                                <div class="tooltip">Saves 0.5 kg</div>
+
+                            <button class="activity-btn" data-id="walking" data-savings="0.5"
+                                aria-label="Log walking activity, saves 0.5 kilograms of carbon dioxide">
+                                <span class="emoji" aria-hidden="true">🚶</span>
+                                Walking
+                                <div class="tooltip" role="tooltip">Saves 0.5 kg</div>
                             </button>
-                            <button class="activity-btn" data-id="cycling" data-savings="0.8">
-                                <span class="emoji">🚴</span> Cycling
-                                <div class="tooltip">Saves 0.8 kg</div>
+
+                            <button class="activity-btn" data-id="cycling" data-savings="0.8"
+                                aria-label="Log cycling activity, saves 0.8 kilograms of carbon dioxide">
+                                <span class="emoji" aria-hidden="true">🚴</span>
+                                Cycling
+                                <div class="tooltip" role="tooltip">Saves 0.8 kg</div>
                             </button>
-                            <button class="activity-btn" data-id="bus" data-savings="1.2">
-                                <span class="emoji">🚌</span> Bus
-                                <div class="tooltip">Saves 1.2 kg</div>
+
+                            <button class="activity-btn" data-id="bus" data-savings="1.2"
+                                aria-label="Log bus travel activity, saves 1.2 kilograms of carbon dioxide">
+                                <span class="emoji" aria-hidden="true">🚌</span>
+                                Bus
+                                <div class="tooltip" role="tooltip">Saves 1.2 kg</div>
                             </button>
-                            <button class="activity-btn" data-id="garden" data-savings="0.3">
-                                <span class="emoji">🌱</span> Gardening
-                                <div class="tooltip">Saves 0.3 kg</div>
+
+                            <button class="activity-btn" data-id="garden" data-savings="0.3"
+                                aria-label="Log gardening activity, saves 0.3 kilograms of carbon dioxide">
+                                <span class="emoji" aria-hidden="true">🌱</span>
+                                Gardening
+                                <div class="tooltip" role="tooltip">Saves 0.3 kg</div>
                             </button>
-                            <button class="activity-btn" data-id="laundry" data-savings="1.5">
-                                <span class="emoji">🧺</span> Air Dry
-                                <div class="tooltip">Saves 1.5 kg</div>
+
+                            <button class="activity-btn" data-id="laundry" data-savings="1.5"
+                                aria-label="Log air drying clothes activity, saves 1.5 kilograms of carbon dioxide">
+                                <span class="emoji" aria-hidden="true">🧺</span>
+                                Air Dry
+                                <div class="tooltip" role="tooltip">Saves 1.5 kg</div>
                             </button>
-                            <button class="activity-btn" data-id="recycle" data-savings="0.2">
-                                <span class="emoji">♻️</span> Recycle
-                                <div class="tooltip">Saves 0.2 kg</div>
+
+                            <button class="activity-btn" data-id="recycle" data-savings="0.2"
+                                aria-label="Log recycling activity, saves 0.2 kilograms of carbon dioxide">
+                                <span class="emoji" aria-hidden="true">♻️</span>
+                                Recycle
+                                <div class="tooltip" role="tooltip">Saves 0.2 kg</div>
                             </button>
-                            <button class="activity-btn" data-id="plantmeal" data-savings="2.0">
-                                <span class="emoji">🥗</span> Plant Meal
-                                <div class="tooltip">Saves 2.0 kg</div>
+
+                            <button class="activity-btn" data-id="plantmeal" data-savings="2.0"
+                                aria-label="Log plant based meal activity, saves 2.0 kilograms of carbon dioxide">
+                                <span class="emoji" aria-hidden="true">🥗</span>
+                                Plant Meal
+                                <div class="tooltip" role="tooltip">Saves 2.0 kg</div>
                             </button>
-                            <button class="activity-btn" data-id="shower" data-savings="0.4">
-                                <span class="emoji">🚿</span> Short Shower
-                                <div class="tooltip">Saves 0.4 kg</div>
+
+                            <button class="activity-btn" data-id="shower" data-savings="0.4"
+                                aria-label="Log short shower activity, saves 0.4 kilograms of carbon dioxide">
+                                <span class="emoji" aria-hidden="true">🚿</span>
+                                Short Shower
+                                <div class="tooltip" role="tooltip">Saves 0.4 kg</div>
                             </button>
+
                         </div>
-                        
+
                         <div class="log-history" id="activity-log-list">
                             <!-- Injected via JS -->
                         </div>
@@ -438,7 +518,7 @@
             </section>
 
             <!-- Section 5: Habit Challenges & Streaks -->
-            <section id="gamification" class="section">
+            <section id="gamification" class="section" aria-label="Challenges and Badges">
                 <div class="section-header">
                     <h1>Challenges &amp; Badges</h1>
                     <p>Level up your eco-game with weekly challenges and achievements.</p>
@@ -459,7 +539,8 @@
                     <div class="xp-hero-right">
                         <div class="stat-pill"><span>🔥</span><span id="gam-streak">0</span> Day Streak</div>
                         <div class="stat-pill"><span>🏆</span><span id="gam-badges-count">0</span> Badges</div>
-                        <div class="stat-pill"><span>✅</span><span id="gam-challenges-count">0</span> Challenges Done</div>
+                        <div class="stat-pill"><span>✅</span><span id="gam-challenges-count">0</span> Challenges Done
+                        </div>
                     </div>
                 </div>
 
@@ -476,9 +557,8 @@
                 </div>
             </section>
 
-
             <!-- Section 6: AI Insights -->
-            <section id="insights" class="section">
+            <section id="insights" class="section" aria-label="AI Insights">
                 <div class="section-header">
                     <h1>AI Insights</h1>
                     <p>Personalized analysis and recommendations powered by your data.</p>
@@ -535,9 +615,8 @@
                 </div>
             </section>
 
-
             <!-- Section 7: Community Leaderboard -->
-            <section id="leaderboard" class="section">
+            <section id="leaderboard" class="section" aria-label="Community Leaderboard">
                 <div class="section-header">
                     <h1>Community Leaderboard</h1>
                     <p>See how you stack up against eco-warriors worldwide.</p>
@@ -560,7 +639,6 @@
                 </div>
             </section>
 
-
         </main>
     </div>
 
@@ -580,4 +658,5 @@
     <script type="module" src="js/leaderboard.js"></script>
     <script type="module" src="js/main.js"></script>
 </body>
+
 </html>

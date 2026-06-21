@@ -1,0 +1,175 @@
+/* css/accessibility.css — Accessibility Enhancements */
+
+/* Skip Link */
+.skip-link {
+    position: absolute;
+    top: -100px;
+    left: 16px;
+    background: var(--accent-neon);
+    color: var(--bg-deep);
+    padding: 8px 16px;
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+    z-index: 9999;
+    text-decoration: none;
+    transition: top 0.2s ease;
+}
+
+.skip-link:focus {
+    top: 16px;
+}
+
+/* Focus Indicators — visible keyboard focus on all interactive elements */
+*:focus-visible {
+    outline: 2px solid var(--accent-neon);
+    outline-offset: 3px;
+    border-radius: 4px;
+}
+
+/* Buttons need explicit focus style */
+button:focus-visible,
+.btn-neon:focus-visible,
+.btn-ghost:focus-visible,
+.btn-step:focus-visible,
+.btn-quick-add:focus-visible,
+.activity-btn:focus-visible,
+.nav-item:focus-visible,
+.lb-filter-btn:focus-visible {
+    outline: 2px solid var(--accent-neon);
+    outline-offset: 3px;
+}
+
+/* Remove default outline only when using mouse (handled by :focus-visible) */
+*:focus:not(:focus-visible) {
+    outline: none;
+}
+
+/* Color contrast enhancements */
+.text-muted,
+.stat-label,
+.kpi-label,
+.card-subtitle {
+    color: #8FAF94;
+    /* Improved from #6B8F71 for better contrast ratio */
+}
+
+/* Slider accessibility */
+input[type="range"] {
+    cursor: pointer;
+}
+
+input[type="range"]:focus-visible {
+    outline: 2px solid var(--accent-neon);
+    outline-offset: 4px;
+}
+
+/* Checkbox / toggle focus */
+input[type="checkbox"]:focus-visible {
+    outline: 2px solid var(--accent-neon);
+    outline-offset: 3px;
+}
+
+/* Ensure error/danger text has sufficient contrast */
+.danger-text,
+[style*="--danger"] {
+    color: #FF6B7A;
+    /* Slightly lighter for better contrast on dark bg */
+}
+
+/* Screen reader only utility */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    .hero-glow {
+        animation: none !important;
+    }
+}
+
+/* High contrast mode support */
+@media (forced-colors: active) {
+
+    .btn-neon,
+    .btn-ghost {
+        border: 2px solid ButtonText;
+    }
+
+    .nav-item.active {
+        border: 2px solid Highlight;
+    }
+}
+
+/* Mobile accessibility - larger tap targets */
+@media (max-width: 768px) {
+
+    .activity-btn,
+    .btn-step,
+    .btn-quick-add,
+    .btn-neon,
+    .btn-ghost {
+        min-height: 44px;
+        min-width: 44px;
+    }
+
+    .nav-item {
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+    }
+}
+
+/* Tooltip accessibility */
+.tooltip {
+    position: absolute;
+    background: var(--bg-elevated);
+    color: var(--text-primary);
+    padding: 6px 10px;
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    z-index: 100;
+}
+
+.activity-btn:hover .tooltip,
+.activity-btn:focus .tooltip {
+    opacity: 1;
+}
+
+/* Leaderboard filter buttons — accessible active state */
+.lb-filter-btn[aria-pressed="true"],
+.lb-filter-btn.active {
+    background: var(--accent-neon);
+    color: var(--bg-deep);
+    font-weight: 700;
+}
+
+/* Form labels — ensure visibility */
+label {
+    display: inline-block;
+    margin-bottom: 4px;
+    color: var(--text-primary);
+    font-weight: 500;
+}

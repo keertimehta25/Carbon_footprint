@@ -21,15 +21,25 @@ const defaultData = {
  * Initialize or load data from localStorage
  */
 function loadData() {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) {
+    try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) {
+            const fresh = JSON.parse(JSON.stringify(defaultData));
+            saveData(fresh);
+            return fresh;
+        }
+        const parsed = JSON.parse(raw);
+        // Validate it's an object
+        if (typeof parsed !== 'object' || parsed === null) {
+            throw new Error('Invalid data format');
+        }
+        return Object.assign(JSON.parse(JSON.stringify(defaultData)), parsed);
+    } catch (err) {
+        console.warn('EcoTrack: Storage corrupted, resetting.', err);
         const fresh = JSON.parse(JSON.stringify(defaultData));
         saveData(fresh);
         return fresh;
     }
-    // Merge with defaults to handle missing fields from older saves
-    const parsed = JSON.parse(raw);
-    return Object.assign(JSON.parse(JSON.stringify(defaultData)), parsed);
 }
 
 /**
@@ -58,14 +68,14 @@ function getCurrentDateStr() {
 function getTodayLog() {
     const data = loadData();
     const today = getCurrentDateStr();
-    
+
     let todayLog = data.history.find(log => log.date === today);
     if (!todayLog) {
         todayLog = { date: today, transport: 0, energy: 0, diet: 0, shopping: 0, total: 0 };
         data.history.push(todayLog);
         saveData(data);
     }
-    
+
     return todayLog;
 }
 
@@ -77,21 +87,21 @@ function getTodayLog() {
 function addEmission(category, amount) {
     const data = loadData();
     const today = getCurrentDateStr();
-    
+
     let todayLog = data.history.find(log => log.date === today);
     if (!todayLog) {
         todayLog = { date: today, transport: 0, energy: 0, diet: 0, shopping: 0, total: 0 };
         data.history.push(todayLog);
     }
-    
+
     todayLog[category] += amount;
     todayLog.total += amount;
-    
+
     saveData(data);
-    
+
     // Dispatch event to notify other modules that data changed
     window.dispatchEvent(new Event('ecotrackDataChanged'));
-    
+
     return todayLog.total;
 }
 
@@ -103,24 +113,24 @@ function addEmission(category, amount) {
 function logAction(actionId, savings) {
     const data = loadData();
     const today = getCurrentDateStr();
-    
+
     // Check if action was already completed today
     const alreadyDone = (data.actionsCompleted || []).find(a => a.id === actionId && a.date === today);
-    
+
     if (!alreadyDone) {
         data.actionsCompleted = data.actionsCompleted || [];
         data.actionsCompleted.push({ id: actionId, date: today, savings });
         data.totalSavings = (data.totalSavings || 0) + savings;
-        
+
         // Award 10 XP per action logged
         data.totalXP = (data.totalXP || 0) + 10;
-        
+
         // Update streak logic
         if (data.lastActiveDate !== today) {
             const yesterday = new Date();
             yesterday.setDate(yesterday.getDate() - 1);
             const yesterdayStr = `${yesterday.getFullYear()}-${String(yesterday.getMonth() + 1).padStart(2, '0')}-${String(yesterday.getDate()).padStart(2, '0')}`;
-            
+
             if (data.lastActiveDate === yesterdayStr) {
                 data.streak += 1;
             } else {
@@ -128,7 +138,7 @@ function logAction(actionId, savings) {
             }
             data.lastActiveDate = today;
         }
-        
+
         saveData(data);
         window.dispatchEvent(new Event('ecotrackDataChanged'));
     }
@@ -167,7 +177,43 @@ function earnBadge(badgeId) {
     }
 }
 
-// Export all functions directly
+/**
+ * Export user data as a JSON file download
+ */
+function exportData() {
+    const data = loadData();
+    const json = JSON.stringify(data, null, 2);
+    const blob = new Blob([json], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `ecotrack-backup-${getCurrentDateStr()}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+/**
+ * Reset all data (with confirmation)
+ */
+function resetData() {
+    const fresh = JSON.parse(JSON.stringify(defaultData));
+    saveData(fresh);
+    window.dispatchEvent(new Event('ecotrackDataChanged'));
+    return fresh;
+}
+
+/**
+ * Sanitize string to prevent XSS when inserting into innerHTML
+ * @param {string} str - Raw string to sanitize
+ * @returns {string} HTML-escaped string safe for innerHTML use
+ */
+function sanitizeHTML(str) {
+    const div = document.createElement('div');
+    div.appendChild(document.createTextNode(String(str)));
+    return div.innerHTML;
+}
+
+// Export all functions
 export {
     loadData,
     saveData,
@@ -177,5 +223,8 @@ export {
     isActionCompletedToday,
     earnBadge,
     addXP,
-    getCurrentDateStr
+    getCurrentDateStr,
+    exportData,
+    resetData,
+    sanitizeHTML
 };

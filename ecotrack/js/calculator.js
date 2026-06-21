@@ -31,8 +31,8 @@ function setupWizardNavigation() {
     const btnNext = document.getElementById('btn-next');
     const btnPrev = document.getElementById('btn-prev');
     const btnSave = document.getElementById('btn-save-wizard');
-    
-    if(!btnNext) return;
+
+    if (!btnNext) return;
 
     btnNext.addEventListener('click', () => {
         if (currentStep < totalSteps) {
@@ -57,17 +57,17 @@ function setupWizardNavigation() {
             }
         }
     });
-    
+
     btnSave?.addEventListener('click', saveToDashboard);
 }
 
 function showStep(stepNum) {
     document.querySelectorAll('.wizard-step').forEach(step => step.classList.remove('active-step'));
     document.getElementById(`step-${stepNum}`).classList.add('active-step');
-    
+
     document.getElementById('wizard-step-num').innerText = stepNum;
     document.getElementById('wizard-progress-fill').style.width = `${(stepNum / totalSteps) * 100}%`;
-    
+
     document.getElementById('btn-prev').style.display = stepNum === 1 ? 'none' : 'block';
     document.getElementById('btn-next').innerText = stepNum === totalSteps ? 'Show Results →' : 'Next Step →';
 }
@@ -75,11 +75,11 @@ function showStep(stepNum) {
 function setupLiveCalculation() {
     const sliders = document.querySelectorAll('.impact-slider');
     const toggles = document.querySelectorAll('.neon-toggle');
-    
+
     const calculateLive = () => {
         const impact = calculateCurrentImpact();
         document.getElementById('wizard-running-total').innerText = `${impact.total.toFixed(2)} kg CO₂e`;
-        
+
         // Update live val text next to each slider
         sliders.forEach(slider => {
             const valId = slider.id.replace('slider', 'val');
@@ -95,67 +95,62 @@ function setupLiveCalculation() {
     sliders.forEach(slider => {
         slider.addEventListener('input', calculateLive);
     });
-    
+
     toggles.forEach(toggle => {
         toggle.addEventListener('change', calculateLive);
     });
 }
 
 function calculateCurrentImpact() {
-    // Transport
-    const carKm = parseFloat(document.getElementById('slider-car')?.value || 0);
-    const isElectric = document.getElementById('toggle-electric-car')?.checked;
-    const isDiesel = document.getElementById('toggle-diesel-car')?.checked;
-    
+    // Transport — validated numeric inputs
+    const carKm = Math.max(0, parseFloat(document.getElementById('slider-car')?.value) || 0);
+    const isElectric = document.getElementById('toggle-electric-car')?.checked ?? false;
+    const isDiesel = document.getElementById('toggle-diesel-car')?.checked ?? false;
+    const transitKm = Math.max(0, parseFloat(document.getElementById('slider-transit')?.value) || 0);
+    const flightHrs = Math.max(0, parseFloat(document.getElementById('slider-flight')?.value) || 0);
+
     let carFactor = FACTORS.carPetrol;
     if (isElectric) carFactor = FACTORS.carElectric;
     else if (isDiesel) carFactor = FACTORS.carDiesel;
-    
-    const transport = 
-        (carKm * carFactor) + 
-        ((parseFloat(document.getElementById('slider-transit')?.value) || 0) * FACTORS.transit) +
-        ((parseFloat(document.getElementById('slider-flight')?.value) || 0) * FACTORS.flight);
-        
+
+    const transport = (carKm * carFactor) + (transitKm * FACTORS.transit) + (flightHrs * FACTORS.flight);
+
     // Energy
-    const energy = 
-        ((parseFloat(document.getElementById('slider-elec')?.value) || 0) * FACTORS.elec) +
-        ((parseFloat(document.getElementById('slider-gas')?.value) || 0) * FACTORS.gas);
-        
+    const elecKwh = Math.max(0, parseFloat(document.getElementById('slider-elec')?.value) || 0);
+    const gasM3 = Math.max(0, parseFloat(document.getElementById('slider-gas')?.value) || 0);
+    const energy = (elecKwh * FACTORS.elec) + (gasM3 * FACTORS.gas);
+
     // Diet
-    const diet = 
-        ((parseFloat(document.getElementById('slider-beef')?.value) || 0) * FACTORS.beef) +
-        ((parseFloat(document.getElementById('slider-chicken')?.value) || 0) * FACTORS.chicken) +
-        ((parseFloat(document.getElementById('slider-vegan')?.value) || 0) * FACTORS.vegan);
-        
+    const beefMeals = Math.max(0, parseFloat(document.getElementById('slider-beef')?.value) || 0);
+    const chickenMeals = Math.max(0, parseFloat(document.getElementById('slider-chicken')?.value) || 0);
+    const veganMeals = Math.max(0, parseFloat(document.getElementById('slider-vegan')?.value) || 0);
+    const diet = (beefMeals * FACTORS.beef) + (chickenMeals * FACTORS.chicken) + (veganMeals * FACTORS.vegan);
+
     // Shopping
-    const shopping = 
-        ((parseFloat(document.getElementById('slider-clothes')?.value) || 0) * FACTORS.clothes) +
-        ((parseFloat(document.getElementById('slider-orders')?.value) || 0) * FACTORS.orders);
-        
-    return {
-        transport,
-        energy,
-        diet,
-        shopping,
-        total: transport + energy + diet + shopping
-    };
+    const clothes = Math.max(0, parseFloat(document.getElementById('slider-clothes')?.value) || 0);
+    const orders = Math.max(0, parseFloat(document.getElementById('slider-orders')?.value) || 0);
+    const shopping = (clothes * FACTORS.clothes) + (orders * FACTORS.orders);
+
+    const total = transport + energy + diet + shopping;
+
+    return { transport, energy, diet, shopping, total };
 }
 
 function showResultsScreen() {
     document.querySelectorAll('.wizard-step').forEach(step => step.classList.remove('active-step'));
     document.getElementById('step-results').classList.add('active-step');
-    
+
     document.getElementById('wizard-progress-fill').style.width = '100%';
     document.getElementById('btn-next').style.display = 'none';
-    
+
     const impact = calculateCurrentImpact();
-    
+
     // Animate total
     animateValue('wizard-final-total', 0, impact.total, 1000);
-    
+
     // Draw Chart
     drawResultsChart(impact);
-    
+
     // Set Badge
     const badgeEl = document.getElementById('wizard-badge');
     if (impact.total < 10) {
@@ -168,20 +163,20 @@ function showResultsScreen() {
         badgeEl.innerHTML = '🔴 High Emitter';
         badgeEl.style.color = 'var(--danger)';
     }
-    
+
     // Cycle Equivalences
     const eqEl = document.getElementById('wizard-equivalence');
     const trees = (impact.total / 21).toFixed(1); // Assuming 21kg/year per tree for context
-    const kmFlight = (impact.total / (FACTORS.flight/800)).toFixed(0); // Approx
-    const daysPowered = (impact.total / 5).toFixed(1); 
-    
+    const kmFlight = (impact.total / (FACTORS.flight / 800)).toFixed(0); // Approx
+    const daysPowered = (impact.total / 5).toFixed(1);
+
     let eqIndex = 0;
     const eqList = [
         `= 🌳 ${trees} trees needed to offset yearly`,
         `= ✈️ ${kmFlight} km of flight`,
         `= 💡 ${daysPowered} days of home power`
     ];
-    
+
     eqEl.innerText = eqList[0];
     clearInterval(window.eqInterval);
     window.eqInterval = setInterval(() => {
@@ -193,11 +188,11 @@ function showResultsScreen() {
 function drawResultsChart(impact) {
     const ctx = document.getElementById('wizard-result-chart');
     if (!ctx) return;
-    
+
     if (wizardChart) {
         wizardChart.destroy();
     }
-    
+
     wizardChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
@@ -227,29 +222,62 @@ function drawResultsChart(impact) {
 }
 
 function saveToDashboard() {
-    const impact = calculateCurrentImpact();
-    
-    if (impact.transport > 0) addEmission('transport', impact.transport);
-    if (impact.energy > 0) addEmission('energy', impact.energy);
-    if (impact.diet > 0) addEmission('diet', impact.diet);
-    if (impact.shopping > 0) addEmission('shopping', impact.shopping); // Ensure storage supports shopping
-    
-    // Reset wizard
-    currentStep = 1;
-    showStep(1);
-    document.querySelectorAll('.impact-slider').forEach(s => s.value = 0);
-    document.getElementById('wizard-running-total').innerText = '0.00 kg CO₂e';
-    
-    // Navigate to dashboard automatically
-    document.querySelector('.nav-item[data-target="dashboard"]')?.click();
-    document.getElementById('dashboard').scrollIntoView({ behavior: 'smooth' });
+    try {
+        const impact = calculateCurrentImpact();
+
+        if (impact.total === 0) {
+            showToast('⚠️ No values entered. Please set at least one activity before saving.');
+            return;
+        }
+
+        if (impact.transport > 0) addEmission('transport', impact.transport);
+        if (impact.energy > 0) addEmission('energy', impact.energy);
+        if (impact.diet > 0) addEmission('diet', impact.diet);
+        if (impact.shopping > 0) addEmission('shopping', impact.shopping);
+
+        // Reset wizard
+        currentStep = 1;
+        showStep(1);
+        document.querySelectorAll('.impact-slider').forEach(s => s.value = 0);
+        document.getElementById('wizard-running-total').innerText = '0.00 kg CO₂e';
+
+        showToast('✅ Saved to Dashboard!');
+        document.querySelector('.nav-item[data-target="dashboard"]')?.click();
+        document.getElementById('dashboard').scrollIntoView({ behavior: 'smooth' });
+    } catch (err) {
+        console.error('Error saving to dashboard:', err);
+        showToast('❌ Failed to save. Please try again.');
+    }
+}
+
+// Add this toast helper function at the bottom of calculator.js
+function showToast(message) {
+    const existing = document.getElementById('eco-toast');
+    if (existing) existing.remove();
+
+    const toast = document.createElement('div');
+    toast.id = 'eco-toast';
+    toast.setAttribute('role', 'alert');
+    toast.setAttribute('aria-live', 'assertive');
+    toast.style.cssText = `
+        position: fixed; bottom: 24px; right: 24px; z-index: 9999;
+        background: var(--bg-elevated); color: var(--text-primary);
+        padding: 12px 20px; border-radius: var(--radius-md);
+        border: 1px solid rgba(57, 255, 106, 0.3);
+        font-family: 'Inter', sans-serif; font-size: 0.9rem;
+        animation: slideInRight 0.3s ease;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    `;
+    toast.innerText = message;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 3000);
 }
 
 // Helper
 function animateValue(id, start, end, duration) {
     const obj = document.getElementById(id);
     if (!obj) return;
-    
+
     let startTimestamp = null;
     const step = (timestamp) => {
         if (!startTimestamp) startTimestamp = timestamp;

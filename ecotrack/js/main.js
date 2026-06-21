@@ -13,17 +13,27 @@ document.addEventListener('DOMContentLoaded', () => {
     // 1. Initialize Storage
     loadData();
 
-    // 2. Setup Sticky Sidebar Navigation
+    // 2. Setup Navigation
     setupNavigation();
 
-    // 3. Initialize all Modules
-    initHero();
-    initCalculator();
-    initDashboard();
-    initTracker();
-    initGamification();
-    initInsights();
-    initLeaderboard();
+    // 3. Initialize modules with error boundaries
+    const modules = [
+        { name: 'Hero', fn: initHero },
+        { name: 'Calculator', fn: initCalculator },
+        { name: 'Dashboard', fn: initDashboard },
+        { name: 'Tracker', fn: initTracker },
+        { name: 'Gamification', fn: initGamification },
+        { name: 'Insights', fn: initInsights },
+        { name: 'Leaderboard', fn: initLeaderboard },
+    ];
+
+    modules.forEach(({ name, fn }) => {
+        try {
+            fn();
+        } catch (err) {
+            console.error(`EcoTrack: Failed to initialize module "${name}":`, err);
+        }
+    });
 });
 
 function setupNavigation() {
