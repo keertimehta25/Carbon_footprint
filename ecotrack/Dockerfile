@@ -13,7 +13,9 @@ COPY . /usr/share/nginx/html
 RUN rm -f /usr/share/nginx/html/Dockerfile \
           /usr/share/nginx/html/nginx.conf \
           /usr/share/nginx/html/.dockerignore \
-          /usr/share/nginx/html/README.md
+          /usr/share/nginx/html/README.md \
+          /usr/share/nginx/html/package.json && \
+    rm -rf /usr/share/nginx/html/tests
 
 # Expose port 8080 (Cloud Run requirement)
 EXPOSE 8080

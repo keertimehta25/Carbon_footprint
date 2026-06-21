@@ -80,7 +80,7 @@ function setupLiveCalculation() {
         const impact = calculateCurrentImpact();
         document.getElementById('wizard-running-total').innerText = `${impact.total.toFixed(2)} kg CO₂e`;
 
-        // Update live val text next to each slider
+        // Update live val text next to each slider, and keep ARIA in sync
         sliders.forEach(slider => {
             const valId = slider.id.replace('slider', 'val');
             const valEl = document.getElementById(valId);
@@ -89,6 +89,11 @@ function setupLiveCalculation() {
                 const unit = valEl.innerText.split(' ')[1] || '';
                 valEl.innerText = `${slider.value} ${unit}`;
             }
+            // Keep ARIA attributes in sync so screen readers announce the real value,
+            // not the hardcoded "0" baked into the HTML.
+            slider.setAttribute('aria-valuenow', slider.value);
+            const unitWord = getSliderUnitWord(slider.id);
+            slider.setAttribute('aria-valuetext', `${slider.value} ${unitWord}`);
         });
     };
 
@@ -99,6 +104,26 @@ function setupLiveCalculation() {
     toggles.forEach(toggle => {
         toggle.addEventListener('change', calculateLive);
     });
+}
+
+/**
+ * Maps a slider's element id to a human-readable unit word,
+ * used to build accurate aria-valuetext announcements for screen readers.
+ */
+function getSliderUnitWord(sliderId) {
+    const unitMap = {
+        'slider-car': 'kilometers',
+        'slider-transit': 'kilometers',
+        'slider-flight': 'hours',
+        'slider-elec': 'kilowatt hours',
+        'slider-gas': 'cubic meters',
+        'slider-beef': 'meals',
+        'slider-chicken': 'meals',
+        'slider-vegan': 'meals',
+        'slider-clothes': 'items',
+        'slider-orders': 'orders'
+    };
+    return unitMap[sliderId] || '';
 }
 
 function calculateCurrentImpact() {

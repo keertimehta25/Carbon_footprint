@@ -1,6 +1,6 @@
 // js/tracker.js
 
-import { loadData, saveData, getCurrentDateStr } from './storage.js';
+import { loadData, saveData, getCurrentDateStr, sanitizeHTML } from './storage.js';
 
 let currentSteps = 0;
 const STEP_GOAL = 10000;
@@ -156,11 +156,14 @@ function renderActivityLog(activities) {
     activities.forEach(act => {
         const div = document.createElement('div');
         div.className = 'log-entry';
+        const safeName = sanitizeHTML(act.name);
+        const safeEmoji = sanitizeHTML(act.emoji);
+        const safeTime = sanitizeHTML(act.time);
         div.innerHTML = `
             <div class="log-entry-info">
-                <span>${act.emoji}</span>
-                <span>${act.name}</span>
-                <span class="log-entry-time">${act.time}</span>
+                <span>${safeEmoji}</span>
+                <span>${safeName}</span>
+                <span class="log-entry-time">${safeTime}</span>
             </div>
             <span class="log-entry-savings">+${act.savings.toFixed(2)} kg</span>
         `;
@@ -220,7 +223,13 @@ function renderHeatmap() {
             const cell = document.createElement('div');
             cell.className = 'heatmap-cell';
             cell.setAttribute('data-level', level);
-            
+            cell.setAttribute('role', 'img');
+            cell.setAttribute('tabindex', '0');
+            cell.setAttribute(
+                'aria-label',
+                `${dateObj.toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric' })}: ${savings.toFixed(1)} kg CO₂e saved`
+            );
+
             cell.innerHTML = `
                 <div class="tooltip">${dateObj.toLocaleDateString()}: ${savings.toFixed(1)}kg saved</div>
             `;

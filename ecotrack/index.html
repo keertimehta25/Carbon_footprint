@@ -4,12 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self';
-                   script-src 'self' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://www.gstatic.com;
+                   script-src 'self' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com;
                    style-src 'self' https://cdnjs.cloudflare.com https://fonts.googleapis.com 'unsafe-inline';
                    font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com;
                    img-src 'self' data:;
-                   connect-src 'self' https://firestore.googleapis.com;
-                   frame-ancestors 'none';">
+                   connect-src 'self';
+                   frame-ancestors 'none';
+                   base-uri 'self';
+                   form-action 'self';">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -623,9 +625,9 @@
                 </div>
 
                 <div class="lb-filters">
-                    <button class="lb-filter-btn active" data-period="weekly">This Week</button>
-                    <button class="lb-filter-btn" data-period="monthly">This Month</button>
-                    <button class="lb-filter-btn" data-period="alltime">All Time</button>
+                    <button class="lb-filter-btn active" data-period="weekly" aria-pressed="true">This Week</button>
+                    <button class="lb-filter-btn" data-period="monthly" aria-pressed="false">This Month</button>
+                    <button class="lb-filter-btn" data-period="alltime" aria-pressed="false">All Time</button>
                 </div>
 
                 <div class="lb-layout">
@@ -642,13 +644,8 @@
         </main>
     </div>
 
-    <!-- Firebase SDK (Modular) -->
-    <script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js"></script>
-    <script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js"></script>
-
     <!-- App Scripts (Modular) -->
     <script type="module" src="js/storage.js"></script>
-    <script type="module" src="js/firebase-config.js"></script>
     <script type="module" src="js/hero.js"></script>
     <script type="module" src="js/calculator.js"></script>
     <script type="module" src="js/dashboard.js"></script>

@@ -1,7 +1,7 @@
 // js/leaderboard.js
 // Community Leaderboard — Simulated with realistic eco-warrior data
 
-import { loadData } from './storage.js';
+import { loadData, sanitizeHTML } from './storage.js';
 
 // ─── Simulated Community ──────────────────────────────────────────────────────
 const COMMUNITY = [
@@ -27,8 +27,12 @@ export function initLeaderboard() {
 
     document.querySelectorAll('.lb-filter-btn').forEach(btn => {
         btn.addEventListener('click', e => {
-            document.querySelectorAll('.lb-filter-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.lb-filter-btn').forEach(b => {
+                b.classList.remove('active');
+                b.setAttribute('aria-pressed', 'false');
+            });
             e.currentTarget.classList.add('active');
+            e.currentTarget.setAttribute('aria-pressed', 'true');
             currentPeriod = e.currentTarget.getAttribute('data-period');
 
             // Animate transition
@@ -103,10 +107,11 @@ function renderPodium(top3, scoreKey, period) {
     el.innerHTML = order.map((user, i) => {
         const rank  = ranks[i];
         const label = formatScore(scoreKey, user[scoreKey], period);
+        const safeName = sanitizeHTML(user.name);
         return `
             <div class="podium-slot${user?.isUser ? ' is-user' : ''}">
                 <div class="podium-avatar">${user.avatar}</div>
-                <div class="podium-name">${user.name}</div>
+                <div class="podium-name">${safeName}</div>
                 <div class="podium-score">${label}</div>
                 <div class="podium-stand" style="height:${heights[i]}">
                     <span class="podium-medal">${medals[i]}</span>
@@ -128,12 +133,13 @@ function renderList(allUsers, scoreKey, period) {
         const rankDisplay = rank <= 3
             ? ['🥇', '🥈', '🥉'][rank - 1]
             : `#${rank}`;
+        const safeName = sanitizeHTML(user.name);
 
         return `
             <div class="lb-row${user.isUser ? ' lb-row-user' : ''}">
                 <span class="lb-rank">${rankDisplay}</span>
                 <span class="lb-avatar">${user.avatar}</span>
-                <span class="lb-name">${user.name}${user.isUser ? ' <em style="opacity:0.5;font-size:.75rem">(you)</em>' : ''}</span>
+                <span class="lb-name">${safeName}${user.isUser ? ' <em style="opacity:0.5;font-size:.75rem">(you)</em>' : ''}</span>
                 <span class="lb-score">${label}</span>
             </div>
         `;

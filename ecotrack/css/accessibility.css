@@ -154,7 +154,9 @@ input[type="checkbox"]:focus-visible {
 }
 
 .activity-btn:hover .tooltip,
-.activity-btn:focus .tooltip {
+.activity-btn:focus .tooltip,
+.heatmap-cell:hover .tooltip,
+.heatmap-cell:focus .tooltip {
     opacity: 1;
 }
 

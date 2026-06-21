@@ -1,0 +1,23 @@
+{
+  "name": "ecotrack",
+  "version": "1.0.0",
+  "description": "EcoTrack — Personal Carbon Footprint Tracker. A browser-based progressive web app for tracking, gamifying, and reducing personal carbon emissions.",
+  "main": "index.html",
+  "type": "module",
+  "scripts": {
+    "test": "node tests/ecotrack.test.js",
+    "start": "npx http-server . -p 8080"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "license": "MIT",
+  "private": true,
+  "keywords": [
+    "carbon-footprint",
+    "sustainability",
+    "climate",
+    "gamification",
+    "pwa"
+  ]
+}
