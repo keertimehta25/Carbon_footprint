@@ -1,6 +1,7 @@
 .git
 .gitignore
 README.md
+package.json
 Dockerfile
 .dockerignore
 node_modules
